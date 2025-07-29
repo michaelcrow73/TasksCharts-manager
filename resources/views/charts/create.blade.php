@@ -1,0 +1,52 @@
+@extends('layout')
+
+@section('content')
+    <h1 class="mb-4">Create New Task</h1>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>There were some problems:</strong>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+     <div class="mb-3">
+    <label class="form-label">Due Date</label>
+    <input type="date" name="due_date" class="form-control">
+</div>
+
+    @endif
+
+    <form action="{{ route('tasks.store') }}" method="POST">
+        @csrf
+
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" name="title" class="form-control" placeholder="Task title" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" placeholder="Optional description"></textarea>
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" name="completed" class="form-check-input" id="completed">
+            <label class="form-check-label" for="completed">Mark as completed</label>
+        </div>
+<div class="mb-3">
+    <label for="tag" class="form-label">Tag</label>
+    <select name="tag" id="tag" class="form-select">
+        <option value="">None</option>
+        <option value="Work" {{ old('tag', $task->tag ?? '') == 'Work' ? 'selected' : '' }}>Work</option>
+        <option value="Personal" {{ old('tag', $task->tag ?? '') == 'Personal' ? 'selected' : '' }}>Personal</option>
+        <option value="Urgent" {{ old('tag', $task->tag ?? '') == 'Urgent' ? 'selected' : '' }}>Urgent</option>
+    </select>
+</div>
+
+        <button type="submit" class="btn btn-success">✅ Save Task</button>
+        <a href="{{ route('tasks.index') }}" class="btn btn-secondary">⬅️ Back</a>
+    </form>
+@endsection
